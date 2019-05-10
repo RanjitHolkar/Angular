@@ -65,7 +65,8 @@ export class AddPropertiesComponent implements OnInit {
       pincode: new FormControl(''),
       landmark: new FormControl(''),
       suburbs:new FormControl(''),
-      notes:new FormControl('')
+      notes:new FormControl(''),
+      phone:new FormControl('')
       
      });
    }
@@ -97,6 +98,7 @@ export class AddPropertiesComponent implements OnInit {
     });
 
   }
+
   ngOnInit() {
     this.property_image= false;
     this.noRecordsPopup=false;
@@ -105,9 +107,12 @@ export class AddPropertiesComponent implements OnInit {
     }); 
     console.log(this.items);
   }
+
   showAddpropertiesDiv(){
+
       this.addPropertiesDiv=true;
   }
+
   hideAddpropertiesDiv(){
 
     this.addPropertiesDiv=false;
@@ -115,7 +120,7 @@ export class AddPropertiesComponent implements OnInit {
     this.ngOnInit(); 
     this.editpropertyData='';
 
- }
+  }
  
 
 fileChangeEvent(event:any)
@@ -140,7 +145,8 @@ this.propertyForm = new FormGroup({
   landmark: new FormControl(res.landmark,[Validators.required]),
   suburbs:new FormControl(res.suburbs,[Validators.required]),
   notes:new FormControl(res.notes,[Validators.required]),
-  
+  phone:new FormControl(res.phone,[Validators.required]),
+
 });
 
 var  formData = new FormData();
@@ -160,6 +166,7 @@ var  formData = new FormData();
    formData.append('landmark',this.propertyForm.value['landmark']);
    formData.append('suburbs',this.propertyForm.value['suburbs']);
    formData.append('notes',this.propertyForm.value['notes']);
+   formData.append('phone',this.propertyForm.value['phone']);
    //  formData.append('alldata',res);
     if(this.propertyForm.valid)
     {

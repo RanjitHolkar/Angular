@@ -6,6 +6,7 @@ import { Url } from '../../mygloabal';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { generate } from 'rxjs';
 import * as jspdf from 'jspdf';  
+import {ActivatedRoute} from "@angular/router";
 import html2canvas from 'html2canvas'; 
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
@@ -82,14 +83,17 @@ export class TenantServiesReqComponent implements OnInit {
   documentType:any;
   Doument:any;
   db:any;
+  id:any;
+  
   /*** Files Section Variable:End */ 
-  constructor(private route:Router, public afs: AngularFirestore, public afAuth: AngularFireAuth,public tenantService:TenantService,public toastr:ToastrManager,public formBuilder:FormBuilder) {
+  constructor(private route:Router,private router:ActivatedRoute, public afs: AngularFirestore, public afAuth: AngularFireAuth,public tenantService:TenantService,public toastr:ToastrManager,public formBuilder:FormBuilder) {
 
     this.db = firebase.firestore();
    }
 
   ngOnInit() {
     /* Transaction Details Section in ngOnInit:start */
+    this.router.params.subscribe( params =>{ this.id=params['Msg']});
     this.transactionDetails=true;
     this.messageSubmit=false;
     this.tenantService.getTransactionDetails().subscribe((data)=>{
@@ -102,7 +106,12 @@ export class TenantServiesReqComponent implements OnInit {
     this.land_id=this.landDetails['id'];
     this.tenantPrfilePhoto=this.unitData['profilephoto'];
     });
-     /* Transaction Details Section in ngOnInit:END*/
+    if(this.id != undefined)
+    {
+      this.contactLandlordShow();
+    }
+    /* Transaction Details Section in ngOnInit:END*/
+
     /* Files Details Section :Start */
     this.addTenantDocumentForm = this.formBuilder.group({
       document_name:['',Validators.required],
@@ -127,35 +136,34 @@ export class TenantServiesReqComponent implements OnInit {
       title:['', Validators.required],
       details:['', Validators.required],
       file:['']
-      
     });
     this.personalMessageForm=this.formBuilder.group({
       subject:['',Validators.required]
-    })
-
+    });
   }
   detectTransactionFile(event)
   {
     this.transactionFile=event.target.files;
   }
+  
   sendRequest()
   {
     this.Submit=true;
     if(this.serviceAddForm.valid)
     {
       var  formData = new FormData();
-      console.log(this.transactionFile);
       if(this.transactionFile !=undefined)
       {
         formData.append('selecteFiles',this.transactionFile[0]);
       }
       formData.append('unit_id',this.unit_data);
       formData.append('title',this.serviceAddForm.value.title);
+      formData.append('landlord_id',this.land_id);
       formData.append('description',this.serviceAddForm.value.details);
 
      // this.serviceAddForm.controls['unit_id'].setValue(this.unit_data);
       this.tenantService.addRequest(formData).subscribe((data)=>{
-        this.toastr.successToastr(' Service request sent successfully ', 'Success!');
+        this.toastr.successToastr(' Service request sent successfully ','Success!');
         $('#ProfileUpdateModal').modal('hide');
         this.Submit=false;
         this.serviceRequestDetailsShow();
@@ -184,10 +192,12 @@ export class TenantServiesReqComponent implements OnInit {
   {
     return this.serviceAddForm.controls;
   }
+  
   get editServiceForm()
   {
     return this.editServiceAddForm.controls;
   }
+
   SentServiceRequest()
   {
     $('#ProfileUpdateModal').modal('show');
@@ -278,18 +288,21 @@ export class TenantServiesReqComponent implements OnInit {
   get addDocTenantForm(){
     return this.addTenantDocumentForm.controls;
   }
+  addTenantDocumentPopup()
+  {   
+    this.tenantService.getDocumnetType(this.land_id).subscribe((data)=>{
+    this.documentType=data['tenant_document'];
+    console.log(data);
+      });
+    this.tenantDocument=true;
+  }
 
   detectDocumentFile(event:any)
   {
     this.Doument=event.target.files;
   }
-  addTenantDocumentPopup()
-  {   
-    this.tenantService.getDocumnetType(this.unit_id).subscribe((data)=>{
-    this.documentType=data['document_type'];
-      });
-    this.tenantDocument=true;
-  }
+
+ 
 
     
   cancelTenantDocumentPopup()
@@ -410,7 +423,6 @@ export class TenantServiesReqComponent implements OnInit {
  
    sendMessageLand()
    {
-    
      this.messageSubmit=true;
      if(this.personalMessageForm.valid)
       {
@@ -437,10 +449,10 @@ export class TenantServiesReqComponent implements OnInit {
       }
    }
 
+   
     sendTenantLandMsg(msg)
     {
       var formData=new FormData();
-
       formData.append('message',msg);
       formData.append('subject_id',this.subject_id);
       formData.append('landlord_id',this.land_id);
@@ -451,7 +463,6 @@ export class TenantServiesReqComponent implements OnInit {
           var objDiv = $("#chatDiv");
           var h = objDiv.get(0).scrollHeight;
           objDiv.animate({scrollTop: h});
-         
         }
         //this.showAllMessage(this.subject_id,this.subject);
         this.msg='';

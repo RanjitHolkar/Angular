@@ -905,7 +905,7 @@
                            <label class="bmd-label-floating"> Select country </label>
                            <select formControlName='country'  class="form-control" name="country" [(ngModel)]="property_data.country" >
                            <option> {{property_data.name}}</option>
-                           <option  *ngFor="let co of countries" [(ngValue)]="co.id" >{{co.name}}</option>
+                           <option  *ngFor="let co of countries" [(ngValue)]="co.name" >{{co.name}}</option>
                            </select>
                            <div *ngIf="propertyForm.controls['country'].hasError('required')"  class="error"> country  required  </div>
                         </div>
@@ -952,7 +952,13 @@
                            <div *ngIf="propertyForm.controls['notes'].hasError('required')" class="error">   required  </div>
                         </div>
                      </div>
-                     <div class="col-md-6"></div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                           <label class="bmd-label-floating">Phone</label>
+                           <input type="text" class="form-control" formControlName='phone' name="phone"  [(ngModel)]="property_data.phone" >
+                           <div *ngIf="propertyForm.controls['phone'].hasError('required')" class="error">   required  </div>
+                        </div>
+                     </div>
                   </div>
                   <div class="col-md-12 text-center">
                      <button type="submit" class="btn btn-info pull-right">Update</button>

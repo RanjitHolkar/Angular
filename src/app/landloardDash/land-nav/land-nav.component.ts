@@ -11,14 +11,16 @@ import { Url } from '../../mygloabal';
 export class LandNavComponent implements OnInit,AfterViewInit {
 public profilephoto:any;
 public userInfo:any;
-url=Url;
+public url=Url;
+public notification:any;
+
 @Input() childMessage:any;
   constructor(private router:Router,public landlordService: LandlordService) { 
-
     this.userInfo=JSON.parse(localStorage.getItem("currentUser"));
     this.profilephoto= this.userInfo.userinfo.profilephoto;   
-     console.log(this.profilephoto);
+    console.log(this.profilephoto);
   }
+
   ngAfterViewInit(){
   
      
@@ -30,8 +32,7 @@ url=Url;
     this.profilephoto= this.userInfo.userinfo.profilephoto;   
      console.log(this.profilephoto);
   
-
-    this.getNotification();
+    this.getNotificationdata();
    
   }
   // profilePhoto(){
@@ -47,10 +48,17 @@ url=Url;
     this.router.navigate(['/login']);
   }
 
-  getNotification()
+  getNotificationdata()
   {
+
       this.landlordService.getNotification().subscribe((data)=>{
+        this.notification=data;
         console.log(data);
       })  
+      setInterval(()=> {
+        this.landlordService.getNotification().subscribe((data)=>{
+          this.notification=data;
+          console.log(data);
+        }) ; },4000); 
   }
 }

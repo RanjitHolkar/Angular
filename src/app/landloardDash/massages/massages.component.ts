@@ -2,6 +2,7 @@ import { Component, OnInit ,Renderer} from '@angular/core';
 import { LandlordService } from '../../_services/landlord.service';
 import { Router } from '@angular/router';
 import { Url } from '../../mygloabal';
+import { ActivatedRoute} from '@angular/router';
 
 declare var $:any;
 @Component({
@@ -23,13 +24,20 @@ export class MassagesComponent implements OnInit {
   url=Url;
   tenant_details:any;
   subject_name:any;
-  constructor(private render:Renderer,private _landlordServices:LandlordService,private route:Router) { }
+  activeRoute:any;
+  constructor(private render:Renderer,private _landlordServices:LandlordService,private route:Router ,public router:ActivatedRoute) { }
 
   ngOnInit() {
   this.sendbutton=false;
+  this.router.params.subscribe( params =>{ this.activeRoute=params['tenant_id']});
+  if(this.activeRoute)
+  {
+    this.listClick('',this.activeRoute);
+  }
     this._landlordServices.getSenderName().subscribe((data)=>{
       this.tenantDetails=data['sender_name'];
       this.landlord_details=data['landlord_details'];
+      console.log(this.tenantDetails);
     })
   }
 
@@ -48,12 +56,12 @@ export class MassagesComponent implements OnInit {
      $('#landlordMessage').modal('show');
      
 
-          setTimeout(()=>{
-            var objDiv = $("#singleCommentDivMain");
-            var h = objDiv.get(0).scrollHeight;
-            objDiv.animate({scrollTop: h});
-          },800);
-
+      setTimeout(()=>{
+        // scrollTop: $('#singleCommentDivMain').eq(0).scrollHeight}, 800);
+        var objDiv = $("#singleCommentDivMain");
+        var h = objDiv.get(0).scrollHeight;
+        objDiv.animate({scrollTop: h});
+      },800);
 
      const inter =setInterval(() => {
       if(!this.intrval && this.route.url !='/messages' ) {
@@ -61,23 +69,29 @@ export class MassagesComponent implements OnInit {
       }
       var apiData={'subject_id':this.subject_id,'readFlag':true};
       this._landlordServices.getTenantMessage(apiData).subscribe((data)=>{
-        if(data['messages'].length>0){
+        if(data['messages'].length>0)
+        {
           this.chat_msg= this.chat_msg.concat(data['messages']);
           var objDiv = $("#singleCommentDivMain");
           var h = objDiv.get(0).scrollHeight;
           objDiv.animate({scrollTop: h});
         }
      })
-     }, 2000);
+     },2000);
   
   }
 
   public listClick(event:any,tenant_id) {
     this.tenant_id=tenant_id;
     var apiData={'tenant_id':tenant_id,'readFlag':false};
-    event.preventDefault();
-    $("h5").removeClass('activeText');
-    this.render.setElementClass(event.target, "activeText", true);
+    
+    if(event)
+    {
+      event.preventDefault();
+      $("h5").removeClass('activeText');
+      this.render.setElementClass(event.target,"activeText", true);
+    }
+  
     this._landlordServices.getTenantsubject(apiData).subscribe((data)=>{
      this.tenantSubject=data;
      const inter =setInterval(() => {
@@ -88,37 +102,38 @@ export class MassagesComponent implements OnInit {
        this._landlordServices.getTenantsubject(apiData).subscribe((data)=>{
          if(data.length>0){
           this.tenantSubject=this.tenantSubject.concat(data);
-        
          }
        });
       }, 2000);
     })
-    
-    
+     
   }
+
   StopInterval()
   {
+    this.listClick('',this.tenant_id);
+
     this.intrval=false;
   }
+
   sendLandTenantMsg(msg)
   {
     var formData=new FormData();
-
     formData.append('message',msg);
     formData.append('subject_id',this.subject_id);
     formData.append('tenant_id',this.tenant_id);
     this._landlordServices.saveLandMsg(formData).subscribe((data)=>{ 
       console.log('data'+data);
       
-      if(data){
-        this.chat_msg.push({'sender_status':1,'message':msg,'profilephoto':this.landlord_details.profilephoto,'userName':this.landlord_details.userName});
+      if(data)
+      {
+          this.chat_msg.push({'sender_status':1,'message':msg,'profilephoto':this.landlord_details.profilephoto,'userName':this.landlord_details.userName});
           var objDiv = $("#singleCommentDivMain");
           var h = objDiv.get(0).scrollHeight;
           objDiv.animate({scrollTop: h});
       }
      this.msg='';
       })
-
   }
   sendComment(event)
   {

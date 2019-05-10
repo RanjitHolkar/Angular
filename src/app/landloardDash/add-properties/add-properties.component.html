@@ -136,6 +136,14 @@
                     <div *ngIf="propertyForm.controls['notes'].hasError('required')" class="error">   required  </div> 
                   </div>
                 </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Phone</label>
+                    <input type="text" class="form-control" formControlName='phone' name="phone"  >
+                    <div *ngIf="propertyForm.controls['phone'].hasError('required')" class="error">   required  </div> 
+                  </div>
+                </div>
                
                <div class="col-md-6">
                 <div >

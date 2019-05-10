@@ -146,3 +146,13 @@ button.browse_btn {
     color: #fff;
     margin: 10px 0;
 }
+.allDoc td{
+position: relative;
+}
+.allDoc .dropdown {
+    color: #a1a1a1;
+    position: absolute;
+    bottom: -2px;
+    text-align: right;
+    right: 15px;
+}

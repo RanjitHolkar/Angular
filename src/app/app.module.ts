@@ -77,7 +77,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ng6-toastr-notifications';
 import { ViewUnitComponent } from './landloardDash/view-unit/view-unit.component';
 import { SearchTenantComponent } from './tenantDash/search-tenant/search-tenant.component';
-import { DocumentDetailsComponent } from './landlordDash/document-details/document-details.component';
  import * as jspdf from 'jspdf';  
 import html2canvas from 'html2canvas'; 
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
@@ -96,6 +95,13 @@ import {
   AuthServiceConfig,
   GoogleLoginProvider,
 } from "angular-6-social-login";
+import { TransactionComponent } from './tenantDash/my-house/transaction/transaction.component';
+import { LeaseDetailsComponent } from './tenantDash/my-house/lease-details/lease-details.component';
+import { FilesComponent } from './tenantDash/my-house/files/files.component';
+import { HistoryComponent } from './tenantDash/my-house/history/history.component';
+import { ServiceRequestComponent } from './tenantDash/my-house/service-request/service-request.component';
+import { ContactLandlordComponent } from './tenantDash/my-house/contact-landlord/contact-landlord.component';
+import { MyHouseNavComponent } from './tenantDash/my-house/my-house-nav/my-house-nav.component';
 
 
 const appRoutes: Routes = [
@@ -114,10 +120,14 @@ const appRoutes: Routes = [
    { path:'tenant-timeline',component:TenantTimelineComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } },
    { path:'tenant-payment',component:TenantPaymentComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } }, 
    { path:'tenant-pay-rent',component:TenantPayrentComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } }, 
-   { path:'tenant-histroy',component:TenantHistoryComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } }, 
-   { path:'tenant-files',component:TenantFilesComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } }, 
+   { path:'tenant-request',component:ServiceRequestComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } }, 
+   { path:'tenant-history',component:HistoryComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } }, 
    { path:'tenant-landlord-contact',component:TenantContactLanlordComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } }, 
-   { path:'my-house',component:TenantServiesReqComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } }, 
+   { path:'tenant-lease',component:LeaseDetailsComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } },   
+   { path:'tenant-files',component:FilesComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } },   
+   
+   { path:'tenant-contact',component:ContactLandlordComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } },   
+   { path:'my-house',component:TransactionComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } },   
    { path:'tenant-profile',component:TenantProfileComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } },
    { path:'tenant-notification',component:TenantNotificationComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } },
    { path:'tenant-security',component:TenantSecurityComponent, canActivate: [RoleGuard],  data: {    expectedRole: 'tenant'  } },
@@ -143,10 +153,13 @@ const appRoutes: Routes = [
   { path: 'land-billing',  component: BillingComponent,  canActivate: [RoleGuard],  data: {    expectedRole: 'landlord'  }  },
   { path: 'land-massages',  component: MassagesComponent,  canActivate: [RoleGuard],  data: {    expectedRole: 'landlord'  }  },
   { path: 'notification',  component: NotificationComponent,  canActivate: [RoleGuard],  data: {    expectedRole: 'landlord'  }  },
+  { path: 'unit-details/:id/:unitId',  component: ViewUnitComponent,  canActivate: [RoleGuard],  data: {    expectedRole: 'landlord'  }  },
+  
   { path: 'unit-details/:id',  component: ViewUnitComponent,  canActivate: [RoleGuard],  data: {    expectedRole: 'landlord'  }  },
   { path: 'tenants-list/:id',  component: AddTenantComponent,  canActivate: [RoleGuard],  data: {    expectedRole: 'landlord'  }  },
   { path: 'document-details',  component: DocumentsComponent,  canActivate: [RoleGuard],  data: {    expectedRole: 'landlord'  }  },
   { path: 'request-details',  component: RequestLandloardDashComponent,  canActivate: [RoleGuard],  data: {    expectedRole: 'landlord'  }  },
+  { path: 'messages/:tenant_id',  component: MassagesComponent,  canActivate: [RoleGuard],  data: {    expectedRole: 'landlord'  }  },  
   { path: 'messages',  component: MassagesComponent,  canActivate: [RoleGuard],  data: {    expectedRole: 'landlord'  }  },
 
 
@@ -222,8 +235,14 @@ export function getAuthServiceConfigs() {
     AdminProfileComponent,
     ViewUnitComponent,
     SearchTenantComponent,
-    DocumentDetailsComponent,
     RequestLandloardDashComponent,
+    TransactionComponent,
+    LeaseDetailsComponent,
+    FilesComponent,
+    HistoryComponent,
+    ServiceRequestComponent,
+    ContactLandlordComponent,
+    MyHouseNavComponent,
 
   
      

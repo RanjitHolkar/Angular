@@ -105,6 +105,7 @@ export class SearchTenantComponent implements OnInit {
   unitDetailsDisplay(unit_id) {
     this.tenantServices.getUnitDetails(unit_id).subscribe((data) => {
       this.unitData = data.unit_data;
+      console.log('unitData',this.unitData);
       this.unitImges = data.unit_imges;
       this.galleryImages = [];
       for (let index = 0; index < this.unitImges.length; index++) {
@@ -188,7 +189,6 @@ export class SearchTenantComponent implements OnInit {
 
     $('.overlayDivLoader').show();
     var data = { "unit_id": unit_id, "property_id": P_id, "landlord_id": landlord_id };
-    alert(unit_id);
     this.tenantServices.saveRequest(data).subscribe((data) => {
       console.log(data);
       this.toastr.successToastr('Request Send successfully ', 'Success!');

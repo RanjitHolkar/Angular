@@ -11,7 +11,7 @@
 						<div class="tenentList">
 							<h4 class="tenaHead">Tenant List</h4>
 							<div class="listTenant">
-								<h5 class="" *ngFor="let tenant of tenantDetails" (click)="listClick($event,tenant.tenant_id)">{{tenant.userName}}</h5>
+								<h5 class="" [ngClass]="{'activeText': activeRoute == tenant.tenant_id }" *ngFor="let tenant of tenantDetails" (click)="listClick($event,tenant.tenant_id)">{{tenant.userName}}</h5>
 							</div>
 						</div>
 					</div>
@@ -20,7 +20,7 @@
 							<h4 class="tenaHead">Subject</h4>
 							<div class="listTenant">
 								<div class="radio radioDiv" *ngFor="let sub of tenantSubject">
-									<label (click)="showLandlordMsg(sub.id,sub.subject)"><input type="radio" name="optradio"> {{sub.subject}} <span class="unreadCount" *ngIf="sub.messagecount>0">( {{sub.messagecount}} )</span></label>
+									<label (click)="showLandlordMsg(sub.id,sub.subject)"> {{sub.subject}} <span class="unreadCount" *ngIf="sub.messagecount>0">( {{sub.messagecount}} )</span></label>
 								</div> 
 							</div>
 						</div>
@@ -28,8 +28,7 @@
 				</div>
 			</div>
 		</div>
-		
-				<!--landlord Message:START  -->
+		<!--landlord Message:START  -->
 
 				<div class="modal fade" id="landlordMessage" >
 					<div class="modal-dialog modal-lg"> 

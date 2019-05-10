@@ -181,9 +181,15 @@
                               <div class="col-md-12">
                                  <p>Deposite Amount: <span>{{unit.depositAmount}} $</span> </p>
                               </div>
+                            
                            </div>
+                           <div class="row apartmentDetails">
+                            <div class="col-md-12">
+                              <span>Mobile No.: </span><span>{{unit.phone}} </span> 
+                           </div>
+                         </div>
                         </div>
-                        <button class="btn btn-success request_btn" (click)="sendRequest(unit.id,unit.propertyId,unit.landlord_id)"> Request for this Unit</button>
+                        <button class="btn btn-success request_btn" (click)="sendRequest(unit.id,unit.propertyId,unit.landlord_id)"> Send Request </button>
                      </div>
                     
                   </div>
@@ -219,7 +225,7 @@
 		</div>
 
 		<button type="button"style="float:right" class="btn btn-primary ModalBtn" (click)="hideSearchLandPop()">
-			Open modal
+			Search Landlord
 		</button>
 		  <!-- The Modal -->
 		<div class="modal inviteLandloardPop" id="myModal">

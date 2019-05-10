@@ -308,7 +308,8 @@ p.Flat_No {
   color: #505050;
 }
 button.request_btn{
-  width: 100%;
+  width: 50%;
+  float: right;
   /* background-color: #3ba585; */
   border:none;
   font-size: 15px;

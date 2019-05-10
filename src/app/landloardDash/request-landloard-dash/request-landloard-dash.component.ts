@@ -30,6 +30,7 @@ export class RequestLandloardDashComponent implements OnInit {
   deleteIndex: number;
   filterData: any;
   arrayIndex: number;
+  tenant_id: any;
   searchText;
   constructor(private landlordService: LandlordService, public toastr: ToastrManager, private route: ActivatedRoute,
     private router: Router, private formBuilder: FormBuilder, ) {
@@ -58,8 +59,8 @@ export class RequestLandloardDashComponent implements OnInit {
   pageChanged(event) {
     this.config.currentPage = event;
   }
-  accept_decline_request_status(item, status) {
-    this.info = { id: item.id, status: status };
+  accept_decline_request_status(item, status, tenant_id) {
+    this.info = { 'id': item.id, 'status': status,'tenant_id':tenant_id };
     this.landlordService.accept_decline_request_status(this.info).subscribe((res: any) => {
       this.accept_decline_data = res;
       console.log(res);
@@ -82,16 +83,14 @@ export class RequestLandloardDashComponent implements OnInit {
     } else {
       this.allData = this.filterData.filter(x => 
          x.userName.trim().toLowerCase().includes(term.trim().toLowerCase())
-      );
-
-     
-       
+      ); 
     }
     console.log(this.allData);
     this.data=this.allData;
   }
   onSearch() {
     let res = this.searchForm.value;
+    console.log(res);
     // if (res.searchData == '' && res.optionSelect == null) {
     //   this.toastr.errorToastr('Please enter atleast one field for filter  !!!.', 'Oops!');
     // }
@@ -108,15 +107,16 @@ export class RequestLandloardDashComponent implements OnInit {
       });
     
   }
-  deleteRequestStatus(id, arrayIndex, updateStatus) {
+  deleteRequestStatus(id, arrayIndex, updateStatus,a ,tenant_id) {
     this.changeStatusId = id;
+    this.tenant_id=tenant_id;
     this.arrayIndex = arrayIndex;
     this.updateStatus = updateStatus;
     console.log(this.updateStatus);
     $('#deleteModal').modal('show');
   }
   deleteRequestStatusConfiramtion() {
-    console.log({ id: this.changeStatusId, status: this.updateStatus });
+    console.log({ id: this.changeStatusId, status: this.updateStatus ,tenant_id:this.tenant_id});
     this.landlordService.deleteRequestStatusConfiramtion({ id: this.changeStatusId, status: this.updateStatus }).subscribe((response) => {
       // console.log(this.statusid);
       console.log('jsdg',response);

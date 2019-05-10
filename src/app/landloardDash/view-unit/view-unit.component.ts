@@ -113,6 +113,7 @@ export class ViewUnitComponent implements OnInit {
   pendingServiceReqdata:any;
   decline_services:any;
   ActiveDeactive_value:any;
+  unitData:any;
   dayduties=['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
   ngOnInit() {
     this.url=Url;
@@ -145,8 +146,13 @@ export class ViewUnitComponent implements OnInit {
     this.declineServiceReqdata=false;
     this.pendingServiceReqdata=true;
     this.route.params.subscribe( params =>{ this.id=params['id']} );
+    this.route.params.subscribe( params =>{ this.unitData=params['unitId']} );
+
+    
+    
     // $(".overlayDivLoader").css('display','block');
-    this.getUnitData();
+   
+   
 this.property_id=this.id;
 
   this.unit_services.getUnitProperties_data(this.id).subscribe((data)=>{ 
@@ -158,7 +164,7 @@ this.property_id=this.id;
     console.log(this.editPropertiesDiv);
     console.log(data);
   });
-
+  this.getUnitData();
   this.leaseForm = this.formBuilder.group({
     start_date: ['', Validators.required],
     end_date: ['', Validators.required],
@@ -249,7 +255,9 @@ this.addPropDocumentForm = this.formBuilder.group({
      pincode: new FormControl(''),
      landmark: new FormControl(''),
      suburbs:new FormControl(''),
-     notes:new FormControl('')
+     notes:new FormControl(''),
+     phone:new FormControl('')
+
      
     });
   
@@ -288,11 +296,16 @@ getUnitData()
       this.noRecordsPopup=false;
       // this.propertyName=data[0]['propertyName'];
     }
-    
+    if(this.unitData != undefined)
+    {
+     this.unitId=this.unitData;
+     this.showUnitDetils(this.unitId);
+    }
   });
+   
 }
+
 display_document_data(unit_id){
-  
   $(".overlayDivLoader").css('display','block');
   if(unit_id !='')
   {
@@ -477,9 +490,10 @@ display_document_data(unit_id){
     this.img_id=img_id;
    $('#Edit_Pimg_Modal').modal('show');
   }
+
   showUnitDetils(unitId)
   {
-   
+   this.propertyDeatils=false;
     $(".overlayDivLoader").css('display','block');
     this.unitId = unitId;
     this.unit_id_lease=unitId;
@@ -494,11 +508,18 @@ display_document_data(unit_id){
       console.log(this.oneUnit_data);
       console.log(this.lease_data);
     });
-    
     this.leaseDeatils=true;
+    this.unitImages=false;
+    this.unitFiles=false;
+    this.tenantDeatils=false;
+    this.unitService=false;
     this.propertyDeatils=false;
     
     $(".overlayDivLoader").css('display','none');
+    if(this.unitData != undefined)
+    {
+     this.unitServicePopup();
+    }
   }
   link_tenant(tenant_id)
   {
@@ -685,6 +706,7 @@ display_document_data(unit_id){
   }
   unitServicePopup()
   {
+   
     $(".overlayDivLoader").css('display','block');
     var alldata={'unit_id':this.unitId};
     this.unit_services.getUnitServices(alldata).subscribe((data)=>{ 
@@ -714,7 +736,6 @@ display_document_data(unit_id){
   unitDeatilsHide()
   {
     this.propertyDeatils=true;
-    this.ngOnInit();
   }
   showaddDocumentTypePop()
   {
@@ -1050,7 +1071,7 @@ hideaddDocType()
   $('#documentTypeModel').modal('hide');
 }
 
-  addNewLease(){
+addNewLease(){
     this.submitted = true;
     if(this.leaseForm.valid)
     {
@@ -1077,7 +1098,6 @@ hideaddDocType()
  
   edit_lease(id)
   {
-   
     this.editleasePopup=true;
   }
   updateLease()
@@ -1103,7 +1123,7 @@ hideaddDocType()
     }
   }
   editProperties()
-{
+ {
   let res= this.propertyForm.value;
   this.propertyForm = new FormGroup({
     propertyName: new FormControl(res.propertyName,[Validators.required]),
@@ -1115,7 +1135,9 @@ hideaddDocType()
     pincode: new FormControl(res.pincode,[Validators.required]),
     landmark: new FormControl(res.landmark,[Validators.required]),
     suburbs:new FormControl(res.suburbs,[Validators.required]),
-    notes:new FormControl(res.notes,[Validators.required])
+    notes:new FormControl(res.notes,[Validators.required]),
+    phone:new FormControl(res.notes,[Validators.required])
+
   
   });
   if(this.propertyForm.valid)

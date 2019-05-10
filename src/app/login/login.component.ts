@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
             var OneSignal = window['OneSignal'] || [];
             OneSignal.push(() => {
               OneSignal.init({
-                appId: "b9ad21ca-2d95-4672-acaa-06a8a580a43a",
+                appId: "f71ff64f-0e6d-47c2-b52a-f7844be498fd",
               });
             });
            
@@ -82,10 +82,10 @@ export class LoginComponent implements OnInit {
     
       
   }
-  saveToken(){
-    alert('hiii');
+  // saveToken(){
+  //   alert('hiii');
    
-  }
+  // }
   
 
 
@@ -106,21 +106,21 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['/tenant-search']);
               }
 
-            }else if(info.userinfo.role =='landlord'){
+              }else if(info.userinfo.role =='landlord'){
 
-              this.router.navigate(['/landlord-dash']);
-            }else if (info.userinfo.role =='admin'){
+                this.router.navigate(['/landlord-dash']);
+              }else if (info.userinfo.role =='admin'){
 
-              this.router.navigate(['/admin-dash']);
-            }
+                this.router.navigate(['/admin-dash']);
+              }
+          
+      else{
             
-            else{
-            
-            //  this.router.navigate(['/login']);
+             this.router.navigate(['/login']);
             }
       } else{
             
-      // this.router.navigate(['/login']);
+       this.router.navigate(['/login']);
       }
 
   }

@@ -157,6 +157,7 @@ export class LandlordService {
       return res;
     }))
   }
+  
   getTransactionType(info: any) {
     return this.http.post<any>(this.BaseUrl + 'get_transaction_type', info).pipe(map((res: any) => {
       return res;
@@ -168,8 +169,8 @@ export class LandlordService {
       return res;
     }))
   }
-  get_request_data() {
 
+  get_request_data() {
     return this.http.get<any>(this.baseurl + 'get_request_data').pipe(map((res: any) => {
       return res;
     }));
